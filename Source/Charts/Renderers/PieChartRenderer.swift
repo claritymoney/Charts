@@ -153,7 +153,13 @@ open class PieChartRenderer: DataRenderer
         let
         element = NSUIAccessibilityElement(accessibilityContainer: chart)
         element.accessibilityLabel = description + ". \(entryCount) \(prefix + (entryCount == 1 ? "" : "s"))"
-        element.accessibilityFrame = chart.bounds
+
+        if #available(iOS 10.0, *) {
+            element.accessibilityFrameInContainerSpace = chart.bounds
+        } else {
+            element.accessibilityFrame = chart.bounds
+        }
+
         element.isHeader = true
         accessibleChartElements.append(element)
 
@@ -282,7 +288,11 @@ open class PieChartRenderer: DataRenderer
                                                     container: chart,
                                                     dataSet: dataSet)
             { (element) in
-                element.accessibilityFrame = path.boundingBoxOfPath
+                if #available(iOS 10.0, *) {
+                     element.accessibilityFrameInContainerSpace = path.boundingBoxOfPath
+                 } else {
+                     element.accessibilityFrame = path.boundingBoxOfPath
+                 }
             }
 
             accessibleChartElements.append(axElement)
@@ -881,7 +891,11 @@ open class PieChartRenderer: DataRenderer
                                                     container: chart,
                                                     dataSet: set)
             { (element) in
-                element.accessibilityFrame = path.boundingBoxOfPath
+                if #available(iOS 10.0, *) {
+                     element.accessibilityFrameInContainerSpace = path.boundingBoxOfPath
+                 } else {
+                     element.accessibilityFrame = path.boundingBoxOfPath
+                 }
                 element.isSelected = true
             }
 
